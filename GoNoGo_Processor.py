@@ -8,7 +8,7 @@ filename = input("Enter File Name: ")
 if filename[-4:] != '.csv':
     filename = filename + '.csv'
 
-df = pd.read_csv(filename, usecols = ['Subject','Session','SessionStartDateTimeUtc','SessionTime','GoProbe.CRESP','GoProbe.RESP','GoProbe.RT','NogoProbe.RESP','Procedure[SubTrial]'])
+df = pd.read_csv(filename, usecols = ['Subject','Session','SessionDate','SessionTime','GoProbe.CRESP','GoProbe.RESP','GoProbe.RT','NogoProbe.RESP','Procedure[SubTrial]'])
 
 df.columns = df.columns.str.replace('.', '_')
 df.columns = df.columns.str.replace(']','')
@@ -36,8 +36,7 @@ output = [{'Participant': participant, 'Session': session, 'Go_Responses_to_NoGo
 
 output_df = pd.DataFrame(output)
 
-test_Date = df.iloc[0,2]
-test_date = test_Date[:-6]
+test_date = df.iloc[0,2]
 test_time = df.iloc[0,3]
 test_dateTime = test_date + ' ' + test_time
 dateTime_dateTime = parser.parse(test_dateTime)
