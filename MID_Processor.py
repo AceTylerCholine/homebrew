@@ -26,6 +26,9 @@ lowPunDF = df[lowPun]
 highPun = df['Condition'] == "LgPun"
 highPunDF = df[highPun]
 
+neutral = df['Condition'] == "Triangle"
+neutralDF = df[neutral]
+
 def MID_dictFunc():
     
     participant = df['NARGUID'].iat[1]
@@ -56,6 +59,11 @@ def MID_dictFunc():
     highPunPerCorr = highPunCorr / highPunTot
     highPunRT = highPunDF[highPunDF["prbrt"] != 0]["prbrt"].mean()
     
+    neutralCorr = neutralDF["prbacc"].sum()
+    neutralTot = len(neutralDF)
+    neutralPerCorr = neutralCorr / neutralTot
+    neutralRT = neutralDF[neutralDF["prbrt"] != 0]["prbrt"].mean()
+    
     moneyEarned = df['moneyamt'].iat[-1]
     
     return locals()
@@ -64,12 +72,14 @@ MID_dict = MID_dictFunc()
 output = [MID_dict]
 output_df = pd.DataFrame(output)
 
+participant = df['NARGUID'].iat[1]
+session = df['Session'].iat[1]
 test_date = df['SessionDate'].iat[1]
 test_time = df['SessionTime'].iat[1]
 test_dateTime = test_date + ' ' + test_time
 dateTime_dateTime = parser.parse(test_dateTime)
 dateTime_string = dateTime_dateTime.strftime("%Y-%m-%d_%H%M")
 
-output_name = 'P' + str(participant) + '_S' + str(session) + '_' + dateTime_string + '.csv'
+output_name = 'MID_' + 'P' + str(participant) + '_S' + str(session) + '_' + dateTime_string + '.csv'
 
 output_df.to_csv(output_name, index=False)

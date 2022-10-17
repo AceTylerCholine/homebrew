@@ -42,6 +42,6 @@ test_dateTime = test_date + ' ' + test_time
 dateTime_dateTime = parser.parse(test_dateTime)
 dateTime_string = dateTime_dateTime.strftime("%Y-%m-%d_%H%M")
 
-output_name = 'P' + str(participant) + '_S' + str(session) + '_' + dateTime_string + '.csv'
+output_name = 'GoNoGo_' + 'P' + str(participant) + '_S' + str(session) + '_' + dateTime_string + '.csv'
 
 output_df.to_csv(output_name, index=False)
