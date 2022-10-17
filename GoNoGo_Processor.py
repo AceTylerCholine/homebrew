@@ -36,12 +36,12 @@ output = [{'Participant': participant, 'Session': session, 'Go_Responses_to_NoGo
 
 output_df = pd.DataFrame(output)
 
-test_date = df.iloc[0,2]
-test_time = df.iloc[0,3]
+test_date = df['SessionDate'].iat[1]
+test_time = df['SessionTime'].iat[1]
 test_dateTime = test_date + ' ' + test_time
 dateTime_dateTime = parser.parse(test_dateTime)
 dateTime_string = dateTime_dateTime.strftime("%Y-%m-%d_%H%M")
 
-output_name = 'P' + participant + '_S' + session + '_' + dateTime_string + '.csv'
+output_name = 'P' + str(participant) + '_S' + str(session) + '_' + dateTime_string + '.csv'
 
 output_df.to_csv(output_name, index=False)
