@@ -1795,7 +1795,7 @@ class SpikeAnalysis_MultiRecording:
                         start_idx = event_timebin_idx[i][0]
                         end_idx = event_timebin_idx[i][1]
                         if end_idx <= len(recording.unit_spiketrains[unit]):
-                            spiketrain_slice = recording.unit_spiketrains[unit][start_idx:end_idx-1]
+                            spiketrain_slice = recording.unit_spiketrains[unit][start_idx:end_idx]
                         else:
                             spiketrain_slice = []
                         spiketrain_slice = np.array(spiketrain_slice)
