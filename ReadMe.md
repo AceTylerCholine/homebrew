@@ -23,6 +23,28 @@ Color word Stroop program I made in a MATLAB class. Learning MATLAB helped me le
 
 ## Home Dir Files
 
+### fdr2.m
+MATLAB function to provide False Discovery Rate corrected p-values using the Benjamini-Hochberg procedure
+looks like:
+```MATLAB
+function [fdrArrayOrgOrder] = fdr2(pvals)
+pvalsLen = length(pvals);
+    [pvalsSort, pvalsI] = sort(pvals);
+    fdrArray = zeros(1, pvalsLen);
+    prevFDR = 1; 
+    for i = pvalsLen:-1:1
+        pVal = pvalsSort(i);
+        pValRank = i; % The rank of the current p-value (1-based index)
+        fdr_pval = pVal * (pvalsLen / pValRank);
+        fdr_pval = min(fdr_pval, prevFDR); 
+        fdrArray(i) = fdr_pval;
+        prevFDR = fdr_pval;
+    end
+    [~, inv_pvalsI] = sort(pvalsI);
+    fdrArrayOrgOrder = fdrArray(inv_pvalsI);
+end
+```
+
 ### remove_begin_nums.py
 I had a folder with a ton of files named '[#] [name].[ext]' and wanted to get rid of the numbers and space at the beginning of the name. Some names might've been duplicated with the numbers already removed, so this script removes those duplicates and continuously removes the first character of the each file's name until it's a letter
 
@@ -45,7 +67,7 @@ for filename in files:
 ### shuffle_num_list.py
 Creates a .txt of a range of numbers shuffled. Useful for creating a document to pull random subject ID's from.
 
-The script contains to functions and variables with default min and max of 100 & 999. Edit these numbers before running the script:
+The script contains two functions and variables with default min and max of 100 & 999. Edit these numbers before running the script:
 ```python
 start_num = 100
 end_num = 999
