@@ -25,7 +25,8 @@ Color word Stroop program I made in a MATLAB class. Learning MATLAB helped me le
 
 ### fdr2.m
 MATLAB function to provide False Discovery Rate corrected p-values using the Benjamini-Hochberg procedure
-looks like:
+
+Looks like:
 ```MATLAB
 function [fdrArrayOrgOrder] = fdr2(pvals)
 pvalsLen = length(pvals);
