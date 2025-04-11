@@ -23,26 +23,67 @@ Color word Stroop program I made in a MATLAB class. Learning MATLAB helped me le
 
 ## Home Dir Files
 
-### fdr2.m
+### fdr3.m
 MATLAB function to provide False Discovery Rate corrected p-values using the Benjamini-Hochberg procedure
 
 Looks like:
 ```MATLAB
-function [fdrArrayOrgOrder] = fdr2(pvals)
-pvalsLen = length(pvals);
-    [pvalsSort, pvalsI] = sort(pvals);
-    fdrArray = zeros(1, pvalsLen);
-    prevFDR = 1; 
-    for i = pvalsLen:-1:1
-        pVal = pvalsSort(i);
-        pValRank = i; % The rank of the current p-value (1-based index)
-        fdr_pval = pVal * (pvalsLen / pValRank);
-        fdr_pval = min(fdr_pval, prevFDR); 
-        fdrArray(i) = fdr_pval;
-        prevFDR = fdr_pval;
+function [fdrArrayOrgOrder] = fdr3(pvals)
+
+    % Determine input shape
+    isRow = isrow(pvals);
+    originalSize = size(pvals); %store for reshaping later
+
+    % Find nans
+    nanIndices = isnan(pvals);
+    validPvals = pvals(~nanIndices);
+
+    % Calculate FDR on valid p-values
+    correctedValidPvals = fdr_no_nans(validPvals); % See helper function below
+
+    % Reconstruct the output array
+    fdrArrayOrgOrder = NaN(originalSize); % Initialize with NaNs
+    % Fill in the non-nan values
+    fdrArrayOrgOrder(~nanIndices) = correctedValidPvals;
+
+
+    function [fdrArrayOrgOrder] = fdr_no_nans(pvals)
+
+        pvalsLen = length(pvals);
+
+        % Reshape to row vector for processing
+        pvals = reshape(pvals, 1, []);
+        % Sort p-values and store original indices
+        [pvalsSort, pvalsI] = sort(pvals);
+
+        % Initialize the array to store FDR corrected p-values
+        fdrArray = zeros(1, pvalsLen);
+
+        % Initialize previous FDR for monotonicity enforcement
+        prevFDR = 1;
+
+        % Iterate through p-values from largest to smallest
+        for i = pvalsLen:-1:1
+            pVal = pvalsSort(i);
+            pValRank = i; % The rank of the current p-value (1-based index)
+
+            % Calculate the FDR corrected p-value
+            fdr_pval = pVal * (pvalsLen / pValRank);
+
+            % Enforce monotonicity: corrected p-value should not be greater than the previous one
+            fdr_pval = min(fdr_pval, prevFDR);
+
+            % Store the corrected p-value
+            fdrArray(i) = fdr_pval;
+
+            % Update the previous FDR value
+            prevFDR = fdr_pval;
+        end
+
+        % Restore the original order of the corrected p-values
+        [~, inv_pvalsI] = sort(pvalsI);
+        fdrArrayOrgOrder = fdrArray(inv_pvalsI);
     end
-    [~, inv_pvalsI] = sort(pvalsI);
-    fdrArrayOrgOrder = fdrArray(inv_pvalsI);
 end
 ```
 
