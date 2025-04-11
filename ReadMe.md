@@ -17,7 +17,7 @@ Some scripts I wrote to visualize specific data results. Not the scripts used to
 
 ## MATLAB_Stroop
 
-Color word Stroop program I made in a MATLAB class. Learning MATLAB helped me learn :snake:, but it was too bulky for my preference, so I haven't used it much since.
+Color word Stroop program I made in a MATLAB class. Learning MATLAB helped me learn :snake:, and although I now prefer Python, I am fairly comfortable switching between them.
 > [!WARNING]
 > Functional, but barely
 
